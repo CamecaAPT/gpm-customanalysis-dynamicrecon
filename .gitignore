@@ -1,0 +1,111 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+# Folder config file
+Desktop.ini
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+# Old Imago logo file
+ISLogo.gif
+
+# Windows File Explorer Ctrl-C/Ctrl-V copies:
+* - Copy*
+
+# Git leftovers:
+*.orig
+
+# Ignore files build by Visual Studio
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+*.VC.db
+.vs
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+packages/*
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
+
+# Intermediate files
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc.builds
+*.pidb
+*.log
+*.scc
+*.tlog
+*.exp
+*.bsc
+*.dep
+*.idb
+*.intermediate.manifest
+*.embed.manifest
+*.res
+*.resources
+*.licenses
+*.htm
+*.map
+
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+*.cache
+*.cachefile
+*.unsuccessfulbuild
+*.lastbuildstate
+
+# Build results
+*.exe
+*.ocx
+*.lib
+*/release/*
+*/debug/*
+*/*/release/*
+*/*/debug/*
+*/*/*/release/*
+*/*/*/debug/*
+*/Assemblies/*
+x64/
+build/
+Build Logs/
+obj/
+Interop/
+!ISdb DLLs/*.dll
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+# IVAS Files
+*.pos
+*.apt
+*.rrng
+*.opendb
+*.i4p
+*.i4w
