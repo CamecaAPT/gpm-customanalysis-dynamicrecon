@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0-windows7.0</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Platforms>x64</Platforms>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<RootNamespace>GPM.CustomAnalysis.DynamicRecon</RootNamespace>
+		<AssemblyName>GPM.CustomAnalysis.DynamicRecon</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Package">
+		<Title>GPM.CustomAnalysis.DynamicRecon</Title>
+		<Authors>Groupe de Physique des Matériaux,CAMECA Instruments Inc.</Authors>
+		<Company>CAMECA Instruments, Inc.</Company>
+		<Product>AP Suite</Product>
+		<Description>Custom analysis for dynamic reconstruction</Description>
+		<Copyright>Copyright 2022 © Groupe de Physique des Matériaux and CAMECA Instruments Inc. All rights reserved.</Copyright>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package Dependencies">
+		<PackageReference Include="Cameca.CustomAnalysis.Interface" Version="0.1.0-alpha.18" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+
+</Project>

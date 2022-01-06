@@ -1,0 +1,101 @@
+# Release Deployment Workflow
+# Prereleases only differ by having a prerelease suffix on the triggering tag
+
+name: Release Deployment
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pushed tag
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    
+    # Job scoped environment variables
+    env:
+      BUILD_CONFIGURATION: Release
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      # Ensure tag is in origin/main and not accidentally on another branch
+      - name: Verify commit exists in origin/main
+        run: git branch --remote --contains | grep origin/main
+          
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+          
+      # Install GitTools
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.11
+        with:
+          versionSpec: '5.x'
+
+      # Determine SemVer with GitVersion
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.11
+        with:
+          useConfigFile: true
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      # Build
+      - name: Build
+        run: >
+          dotnet build
+          --no-restore
+          --configuration $env:BUILD_CONFIGURATION
+          /p:Version=$env:GitVersion_SemVer
+      
+      # Test (if present)
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+      
+      # Create the preview package
+      - name: Pack
+        run: >
+          dotnet pack
+          --no-build
+          --configuration $env:BUILD_CONFIGURATION
+          --include-symbols
+          /p:Version=$env:GitVersion_SemVer
+          --output .
+
+      - name: Push (Package)
+        run: >
+          dotnet nuget push
+          *.nupkg
+          --source https://www.myget.org/F/cameca-apsuite-extensions/api/v2/package 
+          --api-key $env:MYGET_TOKEN
+          --skip-duplicate
+        env:
+          MYGET_TOKEN: ${{ secrets.MYGET_API_KEY }}
+          
+      - name: Push (Symbols Package)
+        run: >
+          dotnet nuget push
+          *.snupkg
+          --source https://www.myget.org/F/cameca-apsuite-extensions/api/v3/index.json
+          --api-key $env:MYGET_TOKEN
+          --skip-duplicate
+        env:
+          MYGET_TOKEN: ${{ secrets.MYGET_API_KEY }}
