@@ -1,24 +1,25 @@
-﻿using System;
-using Cameca.CustomAnalysis.Interface.CustomAnalysis;
+﻿using Cameca.CustomAnalysis.Interface;
+using Cameca.CustomAnalysis.Utilities;
 using Prism.Ioc;
 using Prism.Modularity;
 
-namespace GPM.CustomAnalysis.DynamicRecon
+namespace GPM.CustomAnalysis.DynamicRecon;
+
+public class DynamicReconModule : IModule
 {
-    [ModuleDependency("IvasModule")]
-    public class DynamicReconModule : IModule
+    public void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        public void RegisterTypes(IContainerRegistry containerRegistry)
-        {
-            // Register any additional dependencies with the Unity IoC container
-        }
+        containerRegistry.RegisterCoreServices();
 
-        public void OnInitialized(IContainerProvider containerProvider)
-        {
-            var customAnalysisService = containerProvider.Resolve<ICustomAnalysisService>();
+        containerRegistry.Register<object, DynamicReconParamsNode>(DynamicReconParamsNode.UniqueId);
+        containerRegistry.RegisterInstance<INodeDisplayInfo>(DynamicReconParamsNode.DisplayInfo, DynamicReconParamsNode.UniqueId);
+        containerRegistry.Register<IAnalysisMenuFactory, DynamicReconParamsNodeMenuFactory>(DynamicReconParamsNodeMenuFactory.UniqueId);
+        containerRegistry.Register<object, DynamicReconParamsViewModel>(DynamicReconParamsViewModel.UniqueId);
+    }
 
-            customAnalysisService.Register<DynamicReconCustomAnalysis, DynamicReconOptions>(
-                new CustomAnalysisDescription("GPM_DynamicRecon", "GPM Dynamic Recon Params", new Version()));
-        }
+    public void OnInitialized(IContainerProvider containerProvider)
+    {
+        var extensionRegistry = containerProvider.Resolve<IExtensionRegistry>();
+        extensionRegistry.RegisterAnalysisView<DynamicReconParamsView, DynamicReconParamsViewModel>(AnalysisViewLocation.Top);
     }
 }

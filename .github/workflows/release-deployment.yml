@@ -39,7 +39,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
           
       # Install GitTools
       - name: Install GitVersion
@@ -65,10 +65,16 @@ jobs:
           --no-restore
           --configuration $env:BUILD_CONFIGURATION
           /p:Version=$env:GitVersion_SemVer
+          --nologo
       
       # Test (if present)
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: >
+          dotnet test
+          --no-build
+          --configuration $env:BUILD_CONFIGURATION
+          --verbosity normal
+          --nologo
       
       # Create the preview package
       - name: Pack
