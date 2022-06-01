@@ -5,8 +5,6 @@ ehthumbs.db
 Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
-# Old Imago logo file
-ISLogo.gif
 
 # Windows File Explorer Ctrl-C/Ctrl-V copies:
 * - Copy*
@@ -95,17 +93,8 @@ build/
 Build Logs/
 obj/
 Interop/
-!ISdb DLLs/*.dll
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
-
-# IVAS Files
-*.pos
-*.apt
-*.rrng
-*.opendb
-*.i4p
-*.i4w
