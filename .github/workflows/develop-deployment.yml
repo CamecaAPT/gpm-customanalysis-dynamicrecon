@@ -1,12 +1,12 @@
-# Release Branch Deployment Workflow
+# Develop Branch Deployment Workflow
 
-name: Release Branch (Prerelease) Deployment
+name: Develop Branch (Unstable Release) Deployment
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push (protection requires pull request) events to the develop branch
   push:
-    branches: [ "release/v[0-9]+.[0-9]+.[0-9]+" ]
+    branches: [ develop ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -84,7 +84,7 @@ jobs:
         run: >
           dotnet nuget push
           *.nupkg
-          --source https://www.myget.org/F/cameca-apsuite-extensions/api/v2/package
+          --source https://www.myget.org/F/cameca-apsuite-extensions-preview/api/v2/package 
           --api-key $env:MYGET_TOKEN
           --skip-duplicate
         env:
@@ -94,7 +94,7 @@ jobs:
         run: >
           dotnet nuget push
           *.snupkg
-          --source https://www.myget.org/F/cameca-apsuite-extensions/api/v3/index.json
+          --source https://www.myget.org/F/cameca-apsuite-extensions-preview/api/v3/index.json
           --api-key $env:MYGET_TOKEN
           --skip-duplicate
         env:

@@ -8,6 +8,9 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<RootNamespace>GPM.CustomAnalysis.DynamicRecon</RootNamespace>
 		<AssemblyName>GPM.CustomAnalysis.DynamicRecon</AssemblyName>
+		<EnableDynamicLoading>true</EnableDynamicLoading>
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+		<SelfContained>false</SelfContained>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package">
@@ -19,23 +22,57 @@
 		<Copyright>Copyright 2022 © Groupe de Physique des Matériaux and CAMECA Instruments Inc. All rights reserved.</Copyright>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/CamecaAPT/gpm-customanalysis-isopositionfiltering</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
+		<IncludeBuildOutput>true</IncludeBuildOutput>
+		<NuspecFile>$(AssemblyName).nuspec</NuspecFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<Deterministic>true</Deterministic>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Direct Output" Condition="'$(Configuration)' == 'Debug'">
+		<OutputPath>$(LOCALAPPDATA)\CAMECA\AP Suite\Extensions\$(AssemblyName)</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup Label="Package Dependencies">
 		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
-		<PackageReference Include="Cameca.CustomAnalysis.Utilities" Version="1.0.0" />
-		<PackageReference Include="Cameca.Extensions.Controls" Version="1.0.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Cameca.CustomAnalysis.Utilities" Version="2.0.0" />
+		<PackageReference Include="Cameca.Extensions.Controls" Version="1.1.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\README.md" Pack="True" PackagePath="\" />
 		<None Include="..\LICENSE" Pack="True" PackagePath="\" />
 	</ItemGroup>
+
+	<!-- Nuspec Initiaization and Configuration -->
+	<Target Name="InitializeStandardNuspecProperties" BeforeTargets="GenerateNuspec" Condition="'$(IsPackable)' == 'true'">
+		<PropertyGroup Condition="'$(NuspecFile)' != '' and '$(NuspecProperties)' == ''">
+			<NuspecProperties>
+				id=$(AssemblyName);
+				version=$(Version);
+				title=$(Title);
+				authors=$(Authors);
+				company=$(Company);
+				license=$(PackageLicenseFile);
+				readme=$(PackageReadmeFile);
+				description=$(Description);
+				copyright=$(Copyright);
+				repoType=$(RepositoryType);
+				repoUrl=$(RepositoryUrl);
+				projectUrl=$(RepositoryUrl);
+				repoCommit=$(RepositoryCommit);
+				tfw=$(TargetFramework);
+				outDir=$(MSBuildThisFileDirectory)$(OutputPath)
+			</NuspecProperties>
+		</PropertyGroup>
+	</Target>
 </Project>

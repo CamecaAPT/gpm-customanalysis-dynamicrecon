@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$authors$</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<license type="file">$license$</license>
+		<licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+		<readme>$readme$</readme>
+		<description>$description$</description>
+		<copyright>$copyright$</copyright>
+		<projectUrl>$projectUrl$</projectUrl>
+		<repository type="$repoType$" url="$repoUrl$" commit="$repoCommit$" />
+		<dependencies>
+			<group targetFramework="$tfw$" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="..\LICENSE" target="LICENSE" />
+		<file src="..\README.md" target="README.md" />
+		<file src="$outDir$*" target="lib\$tfw$" />
+	</files>
+</package>

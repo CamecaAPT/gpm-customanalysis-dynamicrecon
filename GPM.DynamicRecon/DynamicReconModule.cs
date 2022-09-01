@@ -9,7 +9,7 @@ public class DynamicReconModule : IModule
 {
     public void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        containerRegistry.RegisterCoreServices();
+        containerRegistry.AddCustomAnalysisUtilities();
 
         containerRegistry.Register<object, DynamicReconParamsNode>(DynamicReconParamsNode.UniqueId);
         containerRegistry.RegisterInstance<INodeDisplayInfo>(DynamicReconParamsNode.DisplayInfo, DynamicReconParamsNode.UniqueId);
