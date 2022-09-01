@@ -20,7 +20,7 @@ internal class DynamicReconParamsNode : AnalysisNodeBase
 
 	public static NodeDisplayInfo DisplayInfo { get; } = new();
 
-	public const string UniqueId = "GPM.CustomAnalysis.IsopositionFiltering.IsopositionFilteringNode";
+	public const string UniqueId = "GPM.CustomAnalysis.DynamicRecon.DynamicReconParamsNode";
 
 	private readonly DynamicReconParams dynamicReconParam;
 
