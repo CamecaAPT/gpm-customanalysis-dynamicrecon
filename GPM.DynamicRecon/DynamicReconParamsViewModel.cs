@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
-using AsyncAwaitBestPractices.MVVM;
 using Cameca.CustomAnalysis.Interface;
 using Cameca.CustomAnalysis.Utilities;
+using CommunityToolkit.Mvvm.Input;
 
 namespace GPM.CustomAnalysis.DynamicRecon;
 
@@ -19,7 +19,7 @@ internal class DynamicReconParamsViewModel : AnalysisViewModelBase<DynamicReconP
 	private readonly IRenderDataFactory renderDataFactory;
 	private bool optionsChanged = false;
 
-	private readonly AsyncCommand runCommand;
+	private readonly AsyncRelayCommand runCommand;
 	public ICommand RunCommand => runCommand;
 
 	public DynamicReconParamsOptions Options => Node!.Options;
@@ -37,7 +37,7 @@ internal class DynamicReconParamsViewModel : AnalysisViewModelBase<DynamicReconP
 		IRenderDataFactory renderDataFactory) : base(services)
 	{
 		this.renderDataFactory = renderDataFactory;
-		runCommand = new AsyncCommand(OnRun, UpdateSelectedEventCountsEnabled);
+		runCommand = new AsyncRelayCommand(OnRun, UpdateSelectedEventCountsEnabled);
 	}
 
 	protected override void OnCreated(ViewModelCreatedEventArgs eventArgs)
@@ -88,9 +88,9 @@ internal class DynamicReconParamsViewModel : AnalysisViewModelBase<DynamicReconP
 	private void OptionsOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
 	{
 		optionsChanged = true;
-		runCommand.RaiseCanExecuteChanged();
+		runCommand.NotifyCanExecuteChanged();
 	}
 
 
-	private bool UpdateSelectedEventCountsEnabled(object? _) => !Tabs.Any() || optionsChanged;
+	private bool UpdateSelectedEventCountsEnabled() => !Tabs.Any() || optionsChanged;
 }
