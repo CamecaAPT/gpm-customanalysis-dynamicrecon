@@ -1,0 +1,23 @@
+# Develop Branch Deployment Workflow
+
+name: Develop Branch (Unstable Release) Deployment
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push (protection requires pull request) events to the develop branch
+  push:
+    branches: [ develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    uses: CamecaAPT/workflows/.github/workflows/build-deploy-gitversion.yml@main
+    with:
+      build-configuration: Release
+      dotnet-version: ${{ vars.DOTNET_VERSION }}
+      azure-artifact-feed: ${{ vars.FEED_EXTENSION_PREVIEW }}
+    secrets:
+      azure-package-read-write: ${{ secrets.AZURE_PACKAGE_READ_WRITE }}
