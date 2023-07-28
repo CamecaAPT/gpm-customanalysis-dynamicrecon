@@ -1,0 +1,31 @@
+# Main Branch Deployment Workflow
+
+name: Main Branch (Tagged Release) Deployment
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pushed tag
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+*"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: Build and Deploy to ${{ matrix.publish-feed }}
+    
+    strategy:
+      matrix:
+        publish-feed: ["${{ vars.FEED_EXTENSION }}", "${{ vars.FEED_EXTENSION_PREVIEW }}"]
+    
+    uses: CamecaAPT/workflows/.github/workflows/build-deploy-gitversion.yml@main
+    with:
+      build-configuration: Release
+      dotnet-version: ${{ vars.DOTNET_VERSION }}
+      azure-artifact-feed: ${{ matrix.publish-feed }}
+      validate-tag-main: true
+    secrets:
+      azure-package-read-write: ${{ secrets.AZURE_PACKAGE_READ_WRITE }}
